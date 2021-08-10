@@ -1,0 +1,98 @@
+﻿<pages:BaseHelperPage x:Class="Amazon.Pages.Helper.ProductPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Amazon.Pages.Helper"
+      xmlns:pages="clr-namespace:Amazon.Pages"
+      xmlns:valueConverters="clr-namespace:Amazon.ValueConverters"
+      xmlns:attachedProperties="clr-namespace:Amazon.AttachedProperties"
+      xmlns:pagesViewModels="clr-namespace:Amazon.Core.ViewModels.PagesViewModels;assembly=Amazon.Core"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProductPage">
+
+    <d:Page.DataContext>
+        <pagesViewModels:ProductCreationPageViewModel/>
+    </d:Page.DataContext>
+
+    <Border>
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Image Source="../../Images/Warehouse.jpg" Grid.ColumnSpan="2" Stretch="UniformToFill">
+                <Image.Effect>
+                    <BlurEffect Radius="0"></BlurEffect>
+                </Image.Effect>
+            </Image>
+
+            <TextBlock Text="Добавить новый товар" 
+                       Grid.ColumnSpan="2"
+                       Foreground="{StaticResource WhiteBrush}" 
+                       FontSize="20"
+                       FontFamily="{StaticResource MontserratLight}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="10"
+                       Panel.ZIndex="2" />
+
+            <Grid Background="Black" ColumnSpan="2" Opacity="0.5"/>
+
+            <Button Style="{StaticResource IcFxButton}" 
+                    VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Center"
+                    Content="Добавить" 
+                    Margin="40"
+                    Grid.ColumnSpan="2"
+                    Command="{Binding AddProductCommand}"
+                    IsEnabled="{Binding IsAddButtonEnabled}"/>
+
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button Command="{Binding LoadImageCommand}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Ellipse Height="200" Width="{Binding Height,RelativeSource={RelativeSource Self}}">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding Image, Converter={valueConverters:ImageValueConverter}}" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <TextBlock Text="Добавьте фото товара" Foreground="{StaticResource WhiteBrush}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Grid.Row="1" Margin="10"/>
+            </Grid>
+
+            <Grid VerticalAlignment="Center" Grid.Column="1" Margin="40 0 40 0" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Foreground="{StaticResource WhiteBrush}" Text="Наименование"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Foreground="{StaticResource WhiteBrush}" Text="Стоимость"/>
+
+                <TextBox Style="{StaticResource ItemTextBoxStyle}" CaretBrush="{StaticResource WhiteBrush}"  BorderBrush="{StaticResource WhiteBrush}" Foreground="{StaticResource WhiteBrush}" Grid.Column="1" Grid.Row="0" Text="{Binding Name,Mode=TwoWay}" TextChanged="TextBoxBase_OnTextChanged" />
+                <TextBox Style="{StaticResource ItemTextBoxStyle}" CaretBrush="{StaticResource WhiteBrush}" BorderBrush="{StaticResource WhiteBrush}" Foreground="{StaticResource WhiteBrush}" Grid.Column="1" Grid.Row="1" Text="{Binding Cost,Mode=TwoWay,  Converter={valueConverters:TextToIntValueConverter}}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</pages:BaseHelperPage>

@@ -1,0 +1,115 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Amazon.Styles"
+                    xmlns:valueConverters="clr-namespace:Amazon.ValueConverters">
+
+    <!-- Context Menu Style-->
+    <Style x:Key="ContextMenuStyle" TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="{StaticResource BackgroundMediumLightBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BackgroundLightBrush}"/>
+        <Setter Property="Padding" Value="4 5 5 5"></Setter>
+
+        <!-- Overided base template-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border x:Name="templateRoot" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="6"
+                            Padding="5"
+                            SnapsToDevicePixels="True">
+                        <Grid VerticalAlignment="Center">
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+                                   Placement="Bottom">
+                                <Border x:Name="SubMenuBorder" 
+                                    CornerRadius="6"
+                                    BorderThickness="0"
+                                    Margin="5">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Opacity="0.6"></DropShadowEffect>
+                                    </Border.Effect>
+
+                                    <ScrollViewer x:Name="SubMenuScrollViewer" 
+                                                  Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+
+                                        <Grid x:Name="ItemsGrid" >
+
+                                            <Grid.Background>
+                                                <SolidColorBrush Color="{StaticResource BackgroundVeryLight}" />
+                                            </Grid.Background>
+
+                                            <Grid.OpacityMask>
+                                                <VisualBrush Visual="{Binding ElementName=Container}"></VisualBrush>
+                                            </Grid.OpacityMask>
+
+                                            <ItemsPresenter Panel.ZIndex="1" x:Name="ItemsPresenter"
+                                                            KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                            Grid.IsSharedSizeScope="True" 
+                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                            KeyboardNavigation.TabNavigation="Cycle"/>
+
+                                            <Border Grid.Row="0" x:Name="Container" CornerRadius="6" Background="{Binding ElementName=ItemsGrid, Path=Background}"/>
+
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Pop Up Menu Item Style -->
+    <Style x:Key="PopUpMenuItemStyle" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Opacity" Value="5" />
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Background" Value="{StaticResource BackgroundVeryLightBrush}"/>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <MultiBinding Converter="{valueConverters:InactiveForegroundValueConverter}">
+                    <Binding Path="Foreground" RelativeSource="{RelativeSource Self}" Mode="OneTime"/>
+                    <Binding Path="IsEnabled" RelativeSource="{RelativeSource Self}"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <Border x:Name="templateRoot" 
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True"
+                            Background="{TemplateBinding Background}">
+
+                        <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                          Content="{TemplateBinding Header}" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True" 
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BackgroundMediumLightBrush}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BackgroundLightBrush}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

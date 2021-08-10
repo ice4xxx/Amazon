@@ -1,0 +1,28 @@
+﻿<pages:BaseHelperPage x:Class="Amazon.Pages.Helper.UsersOrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Amazon.Pages.Helper"
+      xmlns:pages="clr-namespace:Amazon.Pages"
+      xmlns:orderList="clr-namespace:Amazon.Controls.ItemsLists.OrderList"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UsersOrdersPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Style="{StaticResource ItemTextBoxStyle}" IsReadOnly="True" Cursor="Arrow" Text="{Binding UserName, Mode=OneWay}"></TextBox>
+
+        <orderList:OrderListControl Grid.Row="1"/>
+
+        <Border Grid.Row="2" BorderThickness="0 0.2 0 0" BorderBrush="{StaticResource BlackBrush}" Padding="10">
+            <TextBlock Text="{Binding TotalCost}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+    </Grid>
+</pages:BaseHelperPage>

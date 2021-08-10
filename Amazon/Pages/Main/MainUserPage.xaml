@@ -1,0 +1,106 @@
+﻿<pages:BasePage x:Class="Amazon.Pages.Main.MainUserPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Amazon.Pages.Main"
+      xmlns:productList="clr-namespace:Amazon.Controls.ItemsLists.ProductList"
+      xmlns:valueConverters="clr-namespace:Amazon.ValueConverters"
+      xmlns:animations="clr-namespace:Amazon.AttachedProperties.Animations"
+      xmlns:controls="clr-namespace:Amazon.Controls"
+      xmlns:pages="clr-namespace:Amazon.Pages"
+      xmlns:pagesViewModels="clr-namespace:Amazon.Core.ViewModels.PagesViewModels;assembly=Amazon.Core"
+      xmlns:orderList="clr-namespace:Amazon.Controls.ItemsLists.OrderList"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainUserPage">
+
+    <Page.DataContext>
+        <pagesViewModels:MainUserPageViewModel/>
+    </Page.DataContext>
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Width="400" BorderThickness="0 0 1 0">
+
+            <Border Padding="5" BorderThickness="0 0.2 0.2 0.2" Margin="-1" BorderBrush="{StaticResource BlackBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Мои заказы:" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+
+                    <orderList:OrderListControl Grid.Row="1"/>
+                </Grid>
+            </Border>
+
+        </Border>
+
+        <Grid Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border x:Name="border" Panel.ZIndex="2" BorderThickness="0 0 0 1" Height="50" Background="{StaticResource BackgroundMainBrush}">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Style="{StaticResource IconButton}"
+                            Height="{Binding ActualHeight, ElementName=border}"
+                            Command="{Binding BackCommand}"
+                            Visibility="{Binding IsBackButtonVisible, Converter={valueConverters:BooleanToVisibilityValueConverter}}"
+                            Content="&#xf060;"/>
+
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
+
+                        <Button Margin="0 0 10 0"
+                                Height="{Binding ActualHeight, ElementName=border}"
+                                Style="{StaticResource IconButton}" Content="&#xf007;" Command="{Binding ShowUserBubbleCommand}"/>
+
+                        <Button Margin="0 0 10 0"
+                                Height="{Binding ActualHeight, ElementName=border}"
+                                Style="{StaticResource IconButton}" Content="{Binding CartImage}"
+                                Command="{Binding ShowCartCommand}"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+            <Grid Grid.Row="1">
+                <controls:CartBubble animations:BubbleAnimationAttachedProperty.Value="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=DataContext.IsCartOpened, Mode=OneWay}"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Right"
+                                     Panel.ZIndex="10"
+                                     Margin="0 -1000 0 1000"/>
+
+                <controls:UserBubble Panel.ZIndex="10"
+                                     animations:BubbleAnimationAttachedProperty.Value="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=DataContext.IsUserOpened, Mode=OneWay}"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Right"
+                                     Margin="0 -1000 60 1000"/>
+
+                <Frame Grid.Row="1"
+                       animations:ClosePageAnimationAttachedProperty.Value="{Binding IsPageChanging}"
+                       Content="{Binding CurrentHelperPage, Converter={valueConverters:PageTypeValueConverter}}" NavigationUIVisibility="Hidden"/>
+
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+</pages:BasePage>

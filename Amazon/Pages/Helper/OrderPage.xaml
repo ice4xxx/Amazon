@@ -1,0 +1,86 @@
+﻿<pages:BaseHelperPage x:Class="Amazon.Pages.Helper.OrderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Amazon.Pages.Helper"
+      xmlns:productList="clr-namespace:Amazon.Controls.ItemsLists.ProductList"
+      xmlns:pages="clr-namespace:Amazon.Pages"
+      xmlns:valueConverters="clr-namespace:Amazon.ValueConverters"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UserOrderPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Style="{StaticResource ItemTextBoxStyle}" Text="{Binding Id, Mode=OneWay}" IsReadOnly="True" Cursor="Arrow" ></TextBox>
+
+        <productList:OrderProductListControl Grid.Row="1"/>
+
+        <Grid Grid.Row="2" Visibility="{Binding IsUserOwner,Converter={valueConverters:BooleanToVisibilityValueConverter}}">
+            <Button HorizontalAlignment="Center"
+                    Margin="0 5 0 10" 
+                    Style="{StaticResource IcFxButton}" 
+                    Content="Оплатить заказ" Command="{Binding PayCommand}"
+                    Visibility="{Binding IsPayButtonVisible, Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0 5 0 10" 
+                       Text="Заказ оплачен"
+                       Visibility="{Binding IsOrderPaid,Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Visibility="{Binding IsSellerOwner, Converter={valueConverters:BooleanToVisibilityValueConverter}}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"  HorizontalAlignment="Center"
+                    Margin="0 5 0 10" 
+                    Style="{StaticResource IcFxButton}" 
+                    Content="Обработать заказ" Command="{Binding ProcessOrderCommand}"
+                    Visibility="{Binding IsProcessOrderButtonVisible, Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0 5 0 10" 
+                       Text="Заказ обработан"
+                       Visibility="{Binding IsOrderProcessed,Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+
+            <Button Grid.Column="1"  HorizontalAlignment="Center"
+                    Margin="0 5 0 10" 
+                    Style="{StaticResource IcFxButton}" 
+                    Content="Отправить заказ" Command="{Binding ShipCommand}"
+                    Visibility="{Binding IsShipButtonVisible, Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0 5 0 10" 
+                       Text="Заказ отправлен"
+                       Visibility="{Binding IsOrderShipped,Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+            <Button Grid.Column="2"  HorizontalAlignment="Center"
+                    Margin="0 5 0 10" 
+                    Style="{StaticResource IcFxButton}" 
+                    Content="Завершить заказ" Command="{Binding CompleteCommand}"
+                    Visibility="{Binding IsCompleteButtonVisible, Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0 5 0 10" 
+                       Text="Заказ исполнен"
+                       Visibility="{Binding IsOrderCompleted,Converter={valueConverters:BooleanToVisibilityValueConverter}}"/>
+        </Grid>
+
+    </Grid>
+</pages:BaseHelperPage>

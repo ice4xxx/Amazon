@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Amazon.Controls.ItemsLists.OrderList.OrderListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Amazon.Controls.ItemsLists.OrderList"
+             xmlns:valueConverters="clr-namespace:Amazon.ValueConverters"
+             xmlns:controls="clr-namespace:Amazon.Core.ViewModels.Controls;assembly=Amazon.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Border}" x:Key="OuterBorder">
+            <Setter Property="Background" Value="#FBFBF9"></Setter>
+            <Setter Property="CornerRadius" Value="10"></Setter>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={valueConverters:WeakDarkenColorValueConverter}, Mode=OneTime}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource ItemTextBoxStyle}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Arrow"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+    </UserControl.Resources>
+
+
+    <Border Panel.ZIndex="1">
+        <Border.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding ShowOrderProductsCommand}"/>
+        </Border.InputBindings>
+
+        <Border Panel.ZIndex="0" Padding="13 10 14 15" Margin="5 5 15 5" Style="{StaticResource OuterBorder}">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.RowSpan="2"  VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox Grid.Row="0" Text="{Binding Order.Id, Mode=OneWay}" Tag="Номер заказа"/>
+                    <TextBox Grid.Row="1" Text="{Binding Order.Date, Mode=OneWay}" Tag="Дата заказа"/>
+                    <TextBox Grid.Row="2" Text="{Binding Order.Status, Mode=OneWay}" Tag="Статус"/>
+                    <TextBox Grid.Row="3" Text="{Binding Order.Cost, Mode=OneWay}" Tag="Стоимость"/>
+                    <TextBox Grid.Row="4" Text="{Binding Order.CustomerEmail, Mode=OneWay}" Visibility="{Binding IsSellerOwner, Converter={valueConverters:BooleanToVisibilityValueConverter}}" Tag="Email покупателя"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+    </Border>
+
+</UserControl>
